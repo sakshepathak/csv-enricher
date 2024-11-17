@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "csv-enricher-agent"
+version = "0.1.0"
+description = ""
+authors = ["Sakshi Pathak"]
+readme = "README.md"
+packages = [{include = "csv_enricher_agent"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+streamlit = "^1.40.1"
+pandas = "^2.2.3"
+gspread = "^6.1.4"
+oauth2client = "^4.1.3"
+langchain = "^0.3.7"
+langchain-openai = "^0.2.8"
+serpapi = "^0.1.5"
+google-search-results = "^2.4.2"
+gspread-dataframe = "^4.0.0"
+python-dotenv = "^1.0.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
