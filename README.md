@@ -3,6 +3,48 @@
 ## Overview
 The **Spreadsheet Enricher** is a Streamlit application that allows users to enrich their spreadsheet data by leveraging AI-powered queries. Users can upload a CSV file or link a Google Sheet, specify a query to enhance their data, and receive enriched results that can be saved back to Google Sheets or downloaded as a CSV file.
 
+## Project Structure
+ ```bash
+csv-enricher-agent/
+├── csv_enricher_agent/
+│   ├── backend/
+│   │   └── _pycache_/
+│   ├── agent/
+│   │   └── _init_.py
+│   ├── csv_utils.py
+│   ├── google_api.py
+│   ├── search_service.py
+│   ├── _init_.py
+├── tests/
+│   ├── _init_.py
+├── .env
+├── app.py
+├── poetry.lock
+├── pyproject.toml
+├── README.md
+├── .gitignore
+├── LICENSE
+ ```
+## Explanation of Key Files and Directories
+
+**1. csv_enricher_agent:** 
+This directory contains the main codebase for the project. Includes submodules for backend processing, utilities, Google API integration, and search services.
+
+**2. tests:** 
+This directory is reserved for unit and integration tests for the project.
+
+**3. .env:** 
+Contains environment variables such as API keys for OpenAI and SerpAPI.
+
+**4. app.py:** 
+The main file that serves the Streamlit application.
+
+**5. poetry.lock & pyproject.toml:** Manage dependencies and configurations for the project using Poetry.
+
+**6. LICENSE:** 
+The license under which the project is distributed (MIT License in this case).
+
+
 ## Prerequisites
 1. **Python Installation**: Ensure Python 3.8 or higher is installed.
 2. **Poetry Installation**: Install Poetry for dependency management and packaging.
@@ -76,6 +118,26 @@ The **Spreadsheet Enricher** is a Streamlit application that allows users to enr
   streamlit cache clear
   ```
 - **Google Sheets Error**: Verify that the credentials JSON file is correct and the sheet URL is accessible.
+- **Dependency Errors:** If you encounter errors during setup (e.g., related to SerpAPI or any other dependencies), it might be due to existing or conflicting installations. To resolve this:
+
+1. Identify if the dependency causing the issue is already installed:
+```bash
+poetry show <dependency-name>
+```
+
+
+2. If the dependency exists but still causes issues, remove it:
+```bash
+poetry remove <dependency-name>
+```
+
+
+3. Re-add the dependency to ensure proper installation:
+```bash
+poetry add <dependency-name>
+```
+
+
 
 ## Contribution
 Feel free to fork this repository and submit pull requests for any improvements or bug fixes.
