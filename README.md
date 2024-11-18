@@ -2,21 +2,33 @@
 
 ## Overview
 The **Spreadsheet Enricher** is a Streamlit application that allows users to enrich their spreadsheet data by leveraging AI-powered queries. Users can upload a CSV file or link a Google Sheet, specify a query to enhance their data, and receive enriched results that can be saved back to Google Sheets or downloaded as a CSV file.
-
+```mermaid
+graph TD
+    A[User] -->|Upload CSV or Google Sheet| B[app.py]
+    A --> |Query|E
+    B -->|CSV File| C[Load DataFrame]
+    B -->|Google Sheet| D[google_api.py]
+    D -->|Authenticate & Load Sheet| C
+    C --> E["Fetch me the email ID of ${column_name}"]
+    E -->|Invoke Agent with generated query for each row| F[csv_enricher_agent.py]
+    F -->|Fetch Data| G[serp_data_fetcher.py]
+    G -->|Fetch JSON Data| H[Relevant Entities]
+    H -->|Add Data Back| I[Write to Sheet or CSV]
+    I -->|Save Results| J[Updated CSV/Google Sheet]
+```
 ## Project Structure
  ```bash
 csv-enricher-agent/
 ├── csv_enricher_agent/
-│   ├── backend/
-│   │   └── _pycache_/
+│   ├── backend/ 
 │   ├── agent/
-│   │   └── _init_.py
-│   ├── csv_utils.py
+│       ├── prompts/
+│           ├── prompt.py
+│       ├── tools/
+│           ├── serp_data_fetcher.py
+│       ├── csv_enricher_agent.py
 │   ├── google_api.py
-│   ├── search_service.py
-│   ├── _init_.py
 ├── tests/
-│   ├── _init_.py
 ├── .env
 ├── app.py
 ├── poetry.lock
@@ -30,14 +42,14 @@ csv-enricher-agent/
 **1. csv_enricher_agent:** 
 This directory contains the main codebase for the project. Includes submodules for backend processing, utilities, Google API integration, and search services.
 
-**2. tests:** 
-This directory is reserved for unit and integration tests for the project.
+**2. .env:** 
+The `.env` file should be added with OPENAI_API_KEY and SERP_API_KEY. This file is not checked in for security reasons. 
 
-**3. .env:** 
-Contains environment variables such as API keys for OpenAI and SerpAPI.
-
-**4. app.py:** 
+**3. app.py:** 
 The main file that serves the Streamlit application.
+
+**4. tests:** 
+This directory is reserved for unit and integration tests for the project. Testing has not been implemented for this project.
 
 **5. poetry.lock & pyproject.toml:** Manage dependencies and configurations for the project using Poetry.
 
@@ -46,7 +58,7 @@ The license under which the project is distributed (MIT License in this case).
 
 
 ## Prerequisites
-1. **Python Installation**: Ensure Python 3.8 or higher is installed.
+1. **Python Installation**: Ensure Python 3.8 or higher is installed. 
 2. **Poetry Installation**: Install Poetry for dependency management and packaging.
     ```bash
     pip install poetry
@@ -58,7 +70,7 @@ The license under which the project is distributed (MIT License in this case).
       ```
     - SerpAPI Key: Add your SerpAPI key to the `.env` file:
       ```env
-      SERPAPI_API_KEY=your_serpapi_api_key
+      SERP_API_KEY=your_serp_api_key
       ```
 4. **Google Sheets Credentials**:
     - If working with Google Sheets, obtain your credentials JSON file from the Google Cloud Console.
@@ -68,9 +80,12 @@ The license under which the project is distributed (MIT License in this case).
 1. Clone the repository:
     ```bash
     git clone <repository-url>
-    cd <repository-directory>
     ```
-2. Install dependencies with Poetry:
+2. Go to the directory containing `pyproject.toml`
+    ```bash
+    cd csv-enricher/csv-enricher-agent
+    ```
+3. Install dependencies with Poetry:
     ```bash
     poetry install
     ```
@@ -82,8 +97,10 @@ The license under which the project is distributed (MIT License in this case).
     ```
 2. Run the Streamlit app:
     ```bash
+    cd csv_enricher_agent
     streamlit run app.py
     ```
+Note: If poetry shell fails, you can skip that part. Just do `poetry run streamlit run app.py`.
 
 ## Input Options
 ### 1. Upload CSV File
@@ -92,8 +109,8 @@ The license under which the project is distributed (MIT License in this case).
 
 ### 2. Link Google Sheets
 - Ensure your Google Sheets credentials JSON file is ready.
-- Upload the credentials and provide the URL of the Google Sheet.
-  - The app will read the first sheet from the linked Google Sheet.
+- Upload the credentials and provide the URL of the Google Sheet. Make sure that the google sheet is shared to your service account that you created in Google Cloud Console.
+- The app will read the first sheet from the linked Google Sheet.
 
 ## Features
 1. **Column Selection**: Choose specific columns from your data to work with.
@@ -107,16 +124,11 @@ The license under which the project is distributed (MIT License in this case).
    - Download enriched data as a CSV file.
 
 ## Notes
-- The app limits queries to a subset (e.g., 6 rows) for efficient processing.
 - For Google Sheets, ensure the credentials JSON file is valid and matches the account with access to the sheet.
 - The `.env` file must be placed in the root directory of the project for environment variable loading.
 
 ## Troubleshooting
 - **Dependencies Issue**: Run `poetry install` to ensure all dependencies are installed.
-- **Streamlit Issues**: Clear Streamlit cache by running:
-  ```bash
-  streamlit cache clear
-  ```
 - **Google Sheets Error**: Verify that the credentials JSON file is correct and the sheet URL is accessible.
 - **Dependency Errors:** If you encounter errors during setup (e.g., related to SerpAPI or any other dependencies), it might be due to existing or conflicting installations. To resolve this:
 
@@ -125,19 +137,15 @@ The license under which the project is distributed (MIT License in this case).
 poetry show <dependency-name>
 ```
 
-
 2. If the dependency exists but still causes issues, remove it:
 ```bash
 poetry remove <dependency-name>
 ```
 
-
 3. Re-add the dependency to ensure proper installation:
 ```bash
 poetry add <dependency-name>
 ```
-
-
 
 ## Contribution
 Feel free to fork this repository and submit pull requests for any improvements or bug fixes.
