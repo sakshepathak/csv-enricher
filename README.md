@@ -79,7 +79,7 @@ The license under which the project is distributed (MIT License in this case).
 ## Installation
 1. Clone the repository:
     ```bash
-    git clone <https://github.com/sakshepathak/csv-enricher.git>
+    git clone https://github.com/sakshepathak/csv-enricher.git
     ```
 2. Go to the directory containing `pyproject.toml`
     ```bash
