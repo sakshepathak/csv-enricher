@@ -16,6 +16,11 @@ graph TD
     H -->|Add Data Back| I[Write to Sheet or CSV]
     I -->|Save Results| J[Updated CSV/Google Sheet]
 ```
+
+## Demo Video
+To better understand how the project works, check out this explanatory demo video:  
+[Watch the Demo on Loom](https://www.loom.com/share/4108c10ade3c48b4b893dda840c89629?sid=8f0832ee-5dc3-48f2-a1be-000f0466f575)
+
 ## Project Structure
  ```bash
 csv-enricher-agent/
